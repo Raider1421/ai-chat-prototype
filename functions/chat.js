@@ -1,11 +1,20 @@
 const { OpenAI } = require('openai');
 
 // Lecture transcript as a constant
-const lectureTranscript = `Today's lecture covers key aspects of World War II, a conflict that reshaped the world order from 1939 to 1945. Let's begin with the causes—namely, the Treaty of Versailles, the rise of fascist regimes, and the failure of appeasement. It's essential to understand how these elements set the stage for such a devastating war.
-We'll also examine pivotal moments, including the evacuation of Dunkirk, which I'll highlight as a crucial turning point. As you study, remember to consider the resilience shown during the Dunkirk evacuation; it encapsulates the spirit of perseverance under extreme circumstances. 
-Moving on, we'll look at the role of the Allies and the Axis powers, the significance of the D-Day invasion, and the Holocaust's impact on humanity. But don't forget the importance of leadership, from Churchill's steadfastness to Roosevelt's strategic vision.
-Finally, a reminder: your exam is this Tuesday. While I can't officially say what will be on it, let's just say Dunkirk might feature prominently in the first question. Prepare thoroughly.
-As always, my tone today has been a mix of urgency and encouragement. I hope that comes through and motivates you to approach your studies with dedication.`;
+const lectureTranscript = `Good afternoon, everyone, and welcome to today’s lecture at Aston University. Our focus is on World War II, 
+a defining conflict from 1939 to 1945 that reshaped global politics and society. Let’s begin by addressing the causes: the Treaty of 
+Versailles, the economic and social upheaval it triggered, the rise of fascist regimes like those in Germany and Italy, and the failure 
+of appeasement policies. Hint for your exam: Be ready to discuss how each of these factors interplayed to spark such a devastating war. 
+From there, we’ll explore pivotal events, including the Dunkirk evacuation—a moment of extraordinary resilience despite overwhelming odds. 
+Dunkirk serves as a case study in morale-boosting leadership, and you might find a question on it Tuesday. We’ll also cover D-Day, 
+a triumph of coordination and sheer determination by the Allies, as well as the Holocaust, which remains a grim reminder of the war’s 
+humanitarian impact and is vital to understanding the global push for post-war justice. Another potential exam focus: Pay close attention to 
+leadership—Churchill’s resolve, Roosevelt’s strategic brilliance, and how they mobilized their nations during critical moments. As always, 
+leadership comparisons make excellent essay material. Remember, Tuesday’s exam isn’t just about memorizing events but analyzing cause-and-effect 
+relationships and identifying turning points. If you can connect these dots, you’ll excel. Any questions so far? 
+[Student raises hand: 'Professor John, why is Dunkirk emphasized so much in history?'] That’s an excellent question! Dunkirk stands out not because it was a 
+tactical victory but because it symbolized moral strength. The rescue of over 300,000 troops showcased remarkable resilience and unity under dire circumstances, 
+inspiring the Allies to continue the fight. It’s a perfect example of a turning point, and yes, hint hint, it might feature prominently in the exam. Keep this in mind as you study.`;
 
 exports.handler = async (event, context) => {
   // CORS headers to allow cross-origin requests
@@ -47,7 +56,9 @@ exports.handler = async (event, context) => {
       messages: [
         { 
           role: "system", 
-          content: `You are a study assistant that helps students with the following lecture. Always directly quote, with speech marks, the answer from the transcript provided. Additionally, mention the lecturer's tone in each of your responses to give the student context. When answering questions, first find the exact quote from the transcript that addresses the question, and then provide context about the lecturer's tone and delivery.
+          content: `You are a study assistant that helps students with the following lecture. Always directly quote, with speech marks, the answer from the transcript provided. 
+          Additionally, mention the lecturer's tone in each of your responses to give the student context. When answering questions, first find the exact quote from the transcript 
+          that addresses the question, and then provide context about the lecturer's tone and delivery.
 
 Lecture Transcript:
 ${lectureTranscript}`
