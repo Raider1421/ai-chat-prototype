@@ -1,47 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Igloo AI Squidward Model Prototype</title>
-    <link rel="stylesheet" href="styles.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Igloo AI Squidward Model Prototype</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="app-container">
-        <div class="sidebar">
-            <div class="logo">
-                <h2>Igloo AI</h2>
-            </div>
-            <nav class="sidebar-menu">
-                <ul>
-                    <li class="active">World War II Lecture</li>
-                    <li>Chats</li>
-                    <li>Settings</li>
-                </ul>
-            </nav>
-        </div>
-        <main class="main-content">
-            <header class="app-header">
-                <h1>Igloo AI Squidward Model Prototype</h1>
-            </header>
-            <div class="chat-wrapper">
-                <div class="container">
-                    <div id="chat-container">
-                        <div id="chat-messages"></div>
-                    </div>
-                    <div class="input-area">
-                        <input type="text" id="user-input" placeholder="Ask about the World War II lecture...">
-                        <button id="send-btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="22" y1="2" x2="11" y2="13"></line>
-                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </main>
+  <!-- Splash Screen -->
+  <div id="splashScreen">
+    <img src="logo.png" alt="Logo" id="logo">
+  </div>
+
+  <!-- Logo Container -->
+  <div id="logoContainer">
+    <img src="logo.png" alt="Logo" id="logoTop">
+  </div>
+
+  <!-- Chatbot Interface (Initially hidden) -->
+  <div class="chat-container hidden">
+    <h1>Igloo Squidward Model Prototype</h1>
+
+    <div class="chat-window" id="chatWindow">
+      <!-- Chat messages will appear here -->
     </div>
-    <script src="script.js"></script>
+
+    <div class="chatbox-container">
+      <textarea id="userInput" class="chatbox" placeholder="Ask when is the exam?.." rows="1"></textarea>
+      <button id="sendButton" class="send-button">Send</button>
+    </div>
+
+    <!-- Footnote Section -->
+    <div class="footnote">
+      <p>This model is trained on a brief lecture about World War II, focusing on Dunkirk. You can ask questions about 
+        the upcoming exam, but the training is based on a concise dataset. Expanding the model's knowledge is straightforward; however, 
+        since this prototype runs on my server, I’ve limited it to 
+        minimize costs. If you’d like to add specific content—such as a PowerPoint presentation or a 
+        specialized study book—email me (Mohammed), and I’ll update the model accordingly.</p>
+    </div>
+  </div>
+
+  <!-- Chatbot Script -->
+  <script>
+    setTimeout(() => {
+      const splashScreen = document.getElementById('splashScreen');
+      const chatContainer = document.querySelector('.chat-container');
+      
+      splashScreen.classList.add('hidden');
+      chatContainer.style.opacity = '1';
+      chatContainer.classList.remove('hidden');
+    }, 1000);
+
+    const sendButton = document.getElementById('sendButton');
+    const userInput = document.getElementById('userInput');
+    const chatWindow = document.getElementById('chatWindow');
+
+    sendButton.addEventListener('click', async () => {
+      const message = userInput.value.trim();
+      if (message === "") return;
+
+      appendMessage('You', message);
+
+      sendButton.disabled = true;
+
+      try {
+        const response = await fetch('http://localhost:5009/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userMessage: message }),
+        });
+
+        const data = await response.json();
+        appendMessage('Igloo AI', data.reply);
+      } catch (error) {
+        console.error("Error:", error);
+        appendMessage('Igloo AI', "Sorry, there was an error processing your request.");
+      }
+
+      sendButton.disabled = false;
+      userInput.value = "";
+    });
+
+    function appendMessage(sender, message) {
+      const p = document.createElement('p');
+      p.innerHTML = `<strong>${sender}:</strong> ${message}`;
+      chatWindow.appendChild(p);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+  </script>
 </body>
 </html>
