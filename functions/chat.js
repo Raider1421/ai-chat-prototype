@@ -56,10 +56,9 @@ exports.handler = async (event, context) => {
       messages: [
         { 
           role: "system", 
-          content: `You are a study assistant that helps students with the following lecture. Always directly quote, with speech marks, the answer from the transcript provided when relevant
+          content: `You are a study assistant that helps students with the following lecture. Always directly quote, with speech marks, the answer from the transcript provided when relevant 
           Additionally, mention the lecturer's tone in each of your responses to give the student context. When answering questions, first find the exact quote from the transcript 
-          that addresses the question, and then provide context about the lecturer's tone and delivery. If the question is not relevant to the lecture please state that you don't understand and
-          resume into normal chatgpt but state that your resuming into "Default Igloo AI"
+          that addresses the question, and then provide context about the lecturer's tone and delivery.
 
 Lecture Transcript:
 ${lectureTranscript}`
