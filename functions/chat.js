@@ -6,7 +6,7 @@ a defining conflict from 1939 to 1945 that reshaped global politics and society.
 Versailles, the economic and social upheaval it triggered, the rise of fascist regimes like those in Germany and Italy, and the failure 
 of appeasement policies. Hint for your exam: Be ready to discuss how each of these factors interplayed to spark such a devastating war. 
 From there, we’ll explore pivotal events, including the Dunkirk evacuation—a moment of extraordinary resilience despite overwhelming odds. 
-Dunkirk serves as a case study in morale-boosting leadership, and you might find a question on it Tuesday. We’ll also cover D-Day, 
+Dunkirk serves as a case study in morale-boosting leadership, and you might find a question on it Tuesday the 16th of October. We’ll also cover D-Day, 
 a triumph of coordination and sheer determination by the Allies, as well as the Holocaust, which remains a grim reminder of the war’s 
 humanitarian impact and is vital to understanding the global push for post-war justice. Another potential exam focus: Pay close attention to 
 leadership—Churchill’s resolve, Roosevelt’s strategic brilliance, and how they mobilized their nations during critical moments. As always, 
