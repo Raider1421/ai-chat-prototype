@@ -243,3 +243,9 @@ body {
         padding: 10px 15px;
     }
 }
+
+.typewriter {
+    font-family: inherit;
+    color: inherit;
+  }
+  
