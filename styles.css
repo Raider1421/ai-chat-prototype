@@ -84,9 +84,8 @@ body {
 
 h1 {
     color: #61C0BF;
-    font-size: 2rem;
+    font-size: 1.5rem;
     margin-bottom: 20px;
-    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -146,4 +145,101 @@ h1 {
     padding-top: 10px;
     border-top: 1px solid #ddd;
     width: 100%;
+}
+
+/* Existing styles remain the same, add these mobile-specific adjustments */
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 768px) {
+    body {
+        padding: 0 10px;
+    }
+
+    .chat-container {
+        width: 95%;
+        max-width: 100%;
+        padding: 15px;
+        border-radius: 10px;
+        margin: 0;
+    }
+
+    .chatbox-container {
+        width: 100%;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .chatbox {
+        width: 100%;
+        height: 100px; /* Slightly larger textarea on mobile */
+        resize: vertical; /* Allow vertical resizing */
+    }
+
+    .send-button {
+        width: 100%;
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+
+    .chat-window {
+        height: 50vh; /* Responsive height */
+        max-height: 500px;
+    }
+
+    #logoContainer {
+        padding-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    #logoTop {
+        width: 100px;
+    }
+
+    .footnote {
+        font-size: 0.7rem;
+        padding: 10px;
+    }
+}
+
+/* Improve general mobile experience */
+* {
+    -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
+}
+
+input, textarea, button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* Soft focus states for mobile */
+.chatbox:focus, .send-button:focus {
+    outline: 2px solid rgba(97, 192, 191, 0.5);
+    outline-offset: 2px;
+}
+
+/* Prevent text selection awkwardness */
+body {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.chat-window {
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Enhance touch targets */
+@media (pointer: coarse) {
+    .send-button, .chatbox {
+        min-height: 44px; /* Recommended touch target size */
+        padding: 10px 15px;
+    }
 }
