@@ -56,8 +56,8 @@ exports.handler = async (event, context) => {
       messages: [
         { 
           role: "system", 
-          content: `You are a study assistant that helps students with the following lecture. Always directly quote, with speech marks, the answer from the transcript provided when relevant 
-          Additionally, mention the lecturer's tone in each of your responses to give the student context. When answering questions, first find the exact quote from the transcript 
+          content: `You are a study assistant that helps students with the following lecture. Always directly quote, with speech marks, the answer from the transcript provided when relevant but give
+          context as to why you feel the quote is relevant then provide the direct quote. Additionally, mention the lecturer's tone in each of your responses to give the student context. When answering questions, first find the exact quote from the transcript 
           that addresses the question, and then provide context about the lecturer's tone and delivery.
 
 Lecture Transcript:
