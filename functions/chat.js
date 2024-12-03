@@ -1,68 +1,60 @@
-const { OpenAI } = require('openai');
+const fetch = require('node-fetch'); // Ensure this is installed
 
-exports.handler = async (event, context) => {
-  // CORS headers to allow cross-origin requests
-  const headers = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Content-Type',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS'
-  };
+// Lecture transcript and pre-prompt
+const prePrompt = `
+You are a study assistant that helps students with the following lecture. Always directly quote, with speech marks, the answer from the transcript provided. Additionally, mention the lecturer's tone in each of your responses to give the student context.
 
-  // Handle preflight requests
-  if (event.httpMethod === 'OPTIONS') {
-    return {
-      statusCode: 200,
-      headers,
-      body: ''
-    };
-  }
+Lecture transcript:
+Today’s lecture covers key aspects of World War II, a conflict that reshaped the world order from 1939 to 1945. Let’s begin with the causes—namely, the Treaty of Versailles, the rise of fascist regimes, and the failure of appeasement. It’s essential to understand how these elements set the stage for such a devastating war.
 
-  // Only allow POST requests
-  if (event.httpMethod !== 'POST') {
-    return {
-      statusCode: 405,
-      body: JSON.stringify({ error: 'Method Not Allowed' })
-    };
-  }
+We’ll also examine pivotal moments, including the evacuation of Dunkirk, which I’ll highlight as a crucial turning point. As you study, remember to consider the resilience shown during the Dunkirk evacuation; it encapsulates the spirit of perseverance under extreme circumstances. 
 
-  try {
-    // Parse the incoming message
-    const { message } = JSON.parse(event.body);
+Moving on, we'll look at the role of the Allies and the Axis powers, the significance of the D-Day invasion, and the Holocaust's impact on humanity. But don't forget the importance of leadership, from Churchill’s steadfastness to Roosevelt’s strategic vision.
 
-    // Initialize OpenAI with API key from environment variables
-    const openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY
-    });
+Finally, a reminder: your exam is this Tuesday. While I can’t officially say what will be on it, let’s just say Dunkirk might feature prominently in the first question. Prepare thoroughly.
 
-    // Call OpenAI API
-    const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages: [
-        { 
-          role: "system", 
-          content: "You are a helpful AI assistant for startup founders. Provide concise, actionable advice." 
-        },
-        { role: "user", content: message }
-      ]
-    });
+As always, my tone today has been a mix of urgency and encouragement. I hope that comes through and motivates you to approach your studies with dedication.
+`;
 
-    // Return the AI's response
-    return {
-      statusCode: 200,
-      headers,
-      body: JSON.stringify({
-        response: response.choices[0].message.content
-      })
-    };
-  } catch (error) {
-    console.error('OpenAI API Error:', error);
-    return {
-      statusCode: 500,
-      headers,
-      body: JSON.stringify({ 
-        error: 'Failed to process your request',
-        details: error.message 
-      })
-    };
-  }
+exports.handler = async (event) => {
+    try {
+        // Parse incoming request
+        const { message } = JSON.parse(event.body);
+
+        // OpenAI API key
+        const OPENAI_API_KEY = 'your-api-key-here';
+
+        // Call OpenAI API
+        const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${OPENAI_API_KEY}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                model: 'gpt-4',
+                messages: [
+                    { role: 'system', content: prePrompt }, // Include pre-prompt and transcript
+                    { role: 'user', content: message }      // User's question
+                ],
+            }),
+        });
+
+        // Parse OpenAI response
+        const responseData = await openaiResponse.json();
+        const reply = responseData.choices[0]?.message?.content || 'No response from OpenAI.';
+
+        // Return AI response
+        return {
+            statusCode: 200,
+            body: JSON.stringify({ response: reply }),
+        };
+    } catch (error) {
+        console.error('Error:', error);
+
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ response: 'Error processing request.' }),
+        };
+    }
 };
