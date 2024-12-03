@@ -3,9 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const userInput = document.getElementById('user-input');
     const sendBtn = document.getElementById('send-btn');
 
-    // Replace with your actual OpenAI API key
-    const OPENAI_API_KEY = 'your-openai-api-key';
-
     sendBtn.addEventListener('click', sendMessage);
     userInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') sendMessage();
@@ -24,27 +21,19 @@ document.addEventListener('DOMContentLoaded', () => {
         // Clear input
         userInput.value = '';
 
-        // Send to OpenAI
-        fetch('https://api.openai.com/v1/chat/completions', {
+        // Send to Netlify Function
+        fetch('/.netlify/functions/chat', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${OPENAI_API_KEY}`,
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                model: "gpt-3.5-turbo",
-                messages: [
-                    {"role": "system", "content": "You are a helpful assistant."},
-                    {"role": "user", "content": message}
-                ]
-            })
+            body: JSON.stringify({ message: message })
         })
         .then(response => response.json())
         .then(data => {
-            const aiResponse = data.choices[0].message.content;
             const aiMessageEl = document.createElement('div');
             aiMessageEl.classList.add('message', 'ai-message');
-            aiMessageEl.textContent = aiResponse;
+            aiMessageEl.textContent = data.response;
             chatMessages.appendChild(aiMessageEl);
 
             // Scroll to bottom
@@ -52,6 +41,10 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => {
             console.error('Error:', error);
+            const errorMessageEl = document.createElement('div');
+            errorMessageEl.classList.add('message', 'error-message');
+            errorMessageEl.textContent = 'Sorry, there was an error processing your message.';
+            chatMessages.appendChild(errorMessageEl);
         });
     }
 });

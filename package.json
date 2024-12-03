@@ -1,0 +1,16 @@
+{
+  "name": "ai-chat-project",
+  "version": "1.0.0",
+  "description": "AI Chat Prototype",
+  "main": "index.js",
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "netlify build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "openai": "^4.74.0"
+  }
+}
