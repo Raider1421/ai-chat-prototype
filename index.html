@@ -42,6 +42,7 @@
 
   <!-- Chatbot Script -->
   <script>
+    // Initialize after splash screen
     setTimeout(() => {
       const splashScreen = document.getElementById('splashScreen');
       const chatContainer = document.querySelector('.chat-container');
@@ -55,30 +56,37 @@
     const userInput = document.getElementById('userInput');
     const chatWindow = document.getElementById('chatWindow');
 
-    sendButton.addEventListener('click', async () => {
+    sendButton.addEventListener('click', () => {
       const message = userInput.value.trim();
       if (message === "") return;
 
+      // Display user message
       appendMessage('You', message);
 
+      // Clear input and disable button
+      userInput.value = '';
       sendButton.disabled = true;
 
-      try {
-        const response = await fetch('http://localhost:5009/chat', {
+      // Send to Netlify Function
+      fetch('/.netlify/functions/chat', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ userMessage: message }),
-        });
-
-        const data = await response.json();
-        appendMessage('Igloo AI', data.reply);
-      } catch (error) {
-        console.error("Error:", error);
-        appendMessage('Igloo AI', "Sorry, there was an error processing your request.");
-      }
-
-      sendButton.disabled = false;
-      userInput.value = "";
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ message: message })
+      })
+      .then(response => response.json())
+      .then(data => {
+          // Display AI message
+          appendMessage('Igloo AI', data.response);
+      })
+      .catch(error => {
+          console.error('Error:', error);
+          appendMessage('Igloo AI', 'Sorry, there was an error processing your request.');
+      })
+      .finally(() => {
+          sendButton.disabled = false;
+      });
     });
 
     function appendMessage(sender, message) {
