@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Igloo AI Atlas Model Prototype</title>
   <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pptxgen/3.12.0/pptxgen.bundle.min.js"></script>
 </head>
 <body>
   <!-- Splash Screen -->
@@ -21,95 +22,27 @@
   <div class="chat-container hidden">
     <h1>Igloo AI Atlas Model Prototype</h1>
 
+    <!-- PowerPoint Upload Section -->
+    <div class="powerpoint-upload">
+      <input type="file" id="pptxUpload" accept=".pptx" />
+      <div id="pptxStatus"></div>
+    </div>
+
     <div class="chat-window" id="chatWindow">
       <!-- Chat messages will appear here -->
     </div>
 
     <div class="chatbox-container">
-      <textarea id="userInput" class="chatbox" placeholder="Ask when is the exam? for example.." rows="1"></textarea>
+      <textarea id="userInput" class="chatbox" placeholder="Ask a question about the uploaded presentation..." rows="1"></textarea>
       <button id="sendButton" class="send-button">Send</button>
     </div>
 
     <!-- Footnote Section -->
     <div class="footnote">
-      <p>This model is trained on a brief lecture about World War II, focusing on Dunkirk. You can ask questions about 
-        the upcoming exam, but the training is based on a concise dataset. Expanding the model's knowledge is straightforward; however, 
-        since this prototype runs on my server, I’ve limited it to 
-        minimize costs. If you’d like to add specific content—such as a PowerPoint presentation or a 
-        specialized study book—email me (Mohammed), and I’ll update the model accordingly.</p>
+      <p>Upload a PowerPoint presentation to provide context for your questions. This model can now answer questions based on the uploaded presentation.</p>
     </div>
   </div>
 
-  <!-- Chatbot Script -->
-  <script>
-    // Initialize after splash screen
-    setTimeout(() => {
-      const splashScreen = document.getElementById('splashScreen');
-      const chatContainer = document.querySelector('.chat-container');
-      
-      splashScreen.classList.add('hidden');
-      chatContainer.style.opacity = '1';
-      chatContainer.classList.remove('hidden');
-    }, 1000);
-
-    const sendButton = document.getElementById('sendButton');
-    const userInput = document.getElementById('userInput');
-    const chatWindow = document.getElementById('chatWindow');
-
-    sendButton.addEventListener('click', () => {
-      const message = userInput.value.trim();
-      if (message === "") return;
-
-      // Display user message
-      appendMessage('You', message);
-
-      // Clear input and disable button
-      userInput.value = '';
-      sendButton.disabled = true;
-
-      // Send to Netlify Function
-      fetch('/.netlify/functions/chat', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ message: message })
-      })
-      .then(response => response.json())
-      .then(data => {
-          // Display AI message with typewriter effect
-          appendMessage('Igloo AI', data.response);
-      })
-      .catch(error => {
-          console.error('Error:', error);
-          appendMessage('Igloo AI', 'Sorry, there was an error processing your request.');
-      })
-      .finally(() => {
-          sendButton.disabled = false;
-      });
-    });
-
-    function appendMessage(sender, message) {
-      const p = document.createElement('p');
-      const chatWindow = document.getElementById('chatWindow');
-      p.innerHTML = `<strong>${sender}:</strong> <span class="typewriter"></span>`;
-      chatWindow.appendChild(p);
-
-      // Typewriter effect
-      const typewriter = p.querySelector('.typewriter');
-      let index = 0;
-
-      function type() {
-        if (index < message.length) {
-          typewriter.innerHTML += message.charAt(index);
-          index++;
-          setTimeout(type, 20); // Adjust typing speed here
-        }
-      }
-      type();
-
-      chatWindow.scrollTop = chatWindow.scrollHeight;
-    }
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>

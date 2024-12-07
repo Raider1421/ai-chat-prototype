@@ -147,7 +147,28 @@ h1 {
     width: 100%;
 }
 
-/* Existing styles remain the same, add these mobile-specific adjustments */
+/* PowerPoint Upload Styles */
+.powerpoint-upload {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+    width: 100%;
+    gap: 10px;
+}
+
+#pptxUpload {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+#pptxStatus {
+    color: #61C0BF;
+    font-size: 0.9rem;
+    font-style: italic;
+}
 
 /* Mobile Responsiveness */
 @media screen and (max-width: 768px) {
@@ -247,5 +268,4 @@ body {
 .typewriter {
     font-family: inherit;
     color: inherit;
-  }
-  
+}
