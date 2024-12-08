@@ -26,17 +26,18 @@
         long-term goal is to integrate the model with students' university accounts and achieve full synchronization with the Igloo app. This would 
         enable automatic updates, such as uploading the latest lecture recordings, extracting speech, auto generating notes, study cards and letting students
         ask questions about the lecture directly Ultimately, the aim is for the app to evolve into the ultimate "super app" for university students, streamlining all academic needs in one platform.</p>
+        <p>- Mohammed</p>
     </div>
     <button id="proceedButton" class="send-button">Proceed</button>
   </div>
 </div>
 
-  <!-- Logo Container -->
+  <!-- Logo Container maybe double up on this later? or swap with picture of myself? -->
   <div id="logoContainer">
     <img src="logo.png" alt="Logo" id="logoTop">
   </div>
 
-  <!-- Chatbot Interface (Initially hidden) -->
+  <!-- Chatbot Interface (should be Initially hidden) -->
   <div class="chat-container hidden">
     <h1>Igloo AI Atlas Model Prototype</h1>
 
@@ -61,7 +62,7 @@
 
   <!-- Chatbot Script -->
   <script>
-    // Initialize after splash screen
+    // Initialise after splash screen
     setTimeout(() => {
       const splashScreen = document.getElementById('splashScreen');
       const disclaimerScreen = document.getElementById('disclaimerScreen');
@@ -106,7 +107,7 @@
       })
       .then(response => response.json())
       .then(data => {
-          // Display AI message with typewriter effect
+          // typewriter effect
           appendMessage('Igloo AI', data.response);
       })
       .catch(error => {

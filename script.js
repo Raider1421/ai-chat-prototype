@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const message = userInput.value.trim();
         if (!message) return;
 
-        // Display user message
+        // Display the users message
         const userMessageEl = document.createElement('div');
         userMessageEl.classList.add('message', 'user-message');
         userMessageEl.textContent = message;
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
             aiMessageEl.textContent = data.response;
             chatMessages.appendChild(aiMessageEl);
 
-            // Scroll to bottom
+            // Scroll all the way to bottom
             chatMessages.scrollTop = chatMessages.scrollHeight;
         })
         .catch(error => {
