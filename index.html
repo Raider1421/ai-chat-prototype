@@ -12,6 +12,25 @@
     <img src="logo.png" alt="Logo" id="logo">
   </div>
 
+<!-- Disclaimer Screen -->
+<div id="disclaimerScreen" class="disclaimer-container hidden">
+  <div class="disclaimer-content">
+    <h1>Important Disclaimer</h1>
+    <div class="disclaimer-text">
+      <!-- Disclaimer Text -->
+      <p>This model is trained on a brief lecture about World War II. You can ask questions related to the upcoming exam, 
+        but keep in mind that the model's knowledge is based on a concise dataset. Expanding its knowledge base is straightforward; however, to manage 
+        costs, I’ve limited its capabilities as it runs on my server.</p>
+      
+      <p>In the next update, I plan to implement features allowing you to upload PowerPoint presentations and lecture recordings directly. The 
+        long-term goal is to integrate the model with students' university accounts and achieve full synchronization with the Igloo app. This would 
+        enable automatic updates, such as uploading the latest lecture recordings, extracting speech, auto generating notes, study cards and letting students
+        ask questions about the lecture directly Ultimately, the aim is for the app to evolve into the ultimate "super app" for university students, streamlining all academic needs in one platform.</p>
+    </div>
+    <button id="proceedButton" class="send-button">Proceed</button>
+  </div>
+</div>
+
   <!-- Logo Container -->
   <div id="logoContainer">
     <img src="logo.png" alt="Logo" id="logoTop">
@@ -34,9 +53,9 @@
     <div class="footnote">
       <p>This model is trained on a brief lecture about World War II, focusing on Dunkirk. You can ask questions about 
         the upcoming exam, but the training is based on a concise dataset. Expanding the model's knowledge is straightforward; however, 
-        since this prototype runs on my server, I’ve limited it to 
-        minimize costs. If you’d like to add specific content—such as a PowerPoint presentation or a 
-        specialized study book—email me (Mohammed), and I’ll update the model accordingly.</p>
+        since this prototype runs on my server, I've limited it to 
+        minimize costs. If you'd like to add specific content—such as a PowerPoint presentation or a 
+        specialized study book—email me (Mohammed), and I'll update the model accordingly.</p>
     </div>
   </div>
 
@@ -45,12 +64,22 @@
     // Initialize after splash screen
     setTimeout(() => {
       const splashScreen = document.getElementById('splashScreen');
-      const chatContainer = document.querySelector('.chat-container');
+      const disclaimerScreen = document.getElementById('disclaimerScreen');
       
       splashScreen.classList.add('hidden');
+      disclaimerScreen.classList.remove('hidden');
+    }, 1000);
+
+    // Proceed button logic
+    const proceedButton = document.getElementById('proceedButton');
+    const chatContainer = document.querySelector('.chat-container');
+    const disclaimerScreen = document.getElementById('disclaimerScreen');
+
+    proceedButton.addEventListener('click', () => {
+      disclaimerScreen.classList.add('hidden');
       chatContainer.style.opacity = '1';
       chatContainer.classList.remove('hidden');
-    }, 1000);
+    });
 
     const sendButton = document.getElementById('sendButton');
     const userInput = document.getElementById('userInput');
@@ -113,4 +142,3 @@
   </script>
 </body>
 </html>
-
