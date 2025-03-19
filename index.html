@@ -1,136 +1,312 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ola! I am Caio!</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <!-- Splash Screen -->
-  <div id="splashScreen">
-    <img src="logo.png" alt="Logo" id="logo">
-  </div>
+/* Splash Screen Styles */
+#splashScreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f5f7fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
 
-<!-- Disclaimer Screen -->
-<div id="disclaimerScreen" class="disclaimer-container hidden">
-  <div class="disclaimer-content">
-    <h1>Important Disclaimer</h1>
-    <div class="disclaimer-text">
-      <!-- Disclaimer Text -->
-      <p>Ola!</p>
-      
-      <p>Ola!</p>
-        <p>- Mohammed</p>
-    </div>
-    <button id="proceedButton" class="send-button">Proceed</button>
-  </div>
-</div>
+#splashScreen.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
 
-  <!-- Logo Container maybe double up on this later? or swap with picture of myself? -->
-  <div id="logoContainer">
-    <img src="logo.png" alt="Logo" id="logoTop">
-  </div>
+#logo {
+    width: 250px;
+    height: auto;
+    animation: shake 0.5s infinite alternate; /* Shake animation for splash screen logo */
+}
 
-  <!-- Chatbot Interface (should be Initially hidden) -->
-  <div class="chat-container hidden">
-    <h1>Igloo AI Atlas Model Prototype</h1>
-
-    <div class="chat-window" id="chatWindow">
-      <!-- Chat messages will appear here -->
-    </div>
-
-    <div class="chatbox-container">
-      <textarea id="userInput" class="chatbox" placeholder="Ola!" rows="1"></textarea>
-      <button id="sendButton" class="send-button">Send</button>
-    </div>
-
-    <!-- Footnote Section -->
-    <div class="footnote">
-      <p>Ola! I am your Skyscanner travel assistant</p>
-    </div>
-  </div>
-
-  <!-- Chatbot Script -->
-  <script>
-    // Initialise after splash screen
-    setTimeout(() => {
-      const splashScreen = document.getElementById('splashScreen');
-      const disclaimerScreen = document.getElementById('disclaimerScreen');
-      
-      splashScreen.classList.add('hidden');
-      disclaimerScreen.classList.remove('hidden');
-    }, 1000);
-
-    // Proceed button logic
-    const proceedButton = document.getElementById('proceedButton');
-    const chatContainer = document.querySelector('.chat-container');
-    const disclaimerScreen = document.getElementById('disclaimerScreen');
-
-    proceedButton.addEventListener('click', () => {
-      disclaimerScreen.classList.add('hidden');
-      chatContainer.style.opacity = '1';
-      chatContainer.classList.remove('hidden');
-    });
-
-    const sendButton = document.getElementById('sendButton');
-    const userInput = document.getElementById('userInput');
-    const chatWindow = document.getElementById('chatWindow');
-
-    sendButton.addEventListener('click', () => {
-      const message = userInput.value.trim();
-      if (message === "") return;
-
-      // Display user message
-      appendMessage('You', message);
-
-      // Clear input and disable button
-      userInput.value = '';
-      sendButton.disabled = true;
-
-      // Send to Netlify Function
-      fetch('/.netlify/functions/chat', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ message: message })
-      })
-      .then(response => response.json())
-      .then(data => {
-          // typewriter effect
-          appendMessage('Caio', data.response);
-      })
-      .catch(error => {
-          console.error('Error:', error);
-          appendMessage('Caio', 'Sorry, there was an error processing your request.');
-      })
-      .finally(() => {
-          sendButton.disabled = false;
-      });
-    });
-
-    function appendMessage(sender, message) {
-      const p = document.createElement('p');
-      const chatWindow = document.getElementById('chatWindow');
-      p.innerHTML = `<strong>${sender}:</strong> <span class="typewriter"></span>`;
-      chatWindow.appendChild(p);
-
-      // Typewriter effect
-      const typewriter = p.querySelector('.typewriter');
-      let index = 0;
-
-      function type() {
-        if (index < message.length) {
-          typewriter.innerHTML += message.charAt(index);
-          index++;
-          setTimeout(type, 20); // Adjust typing speed here
-        }
-      }
-      type();
-
-      chatWindow.scrollTop = chatWindow.scrollHeight;
+/* Simple shake animation */
+@keyframes shake {
+    0% {
+        transform: translateX(-10px);
     }
-  </script>
-</body>
-</html>
+    100% {
+        transform: translateX(10px);
+    }
+}
+
+/* Logo above chat container */
+#logoContainer {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    padding-top: 20px; /* Adds space above the logo */
+}
+
+#logoTop {
+    width: 150px;
+    height: auto;
+    /* No shake animation for this logo */
+}
+
+/* Body Styling */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f5f7fa;
+    color: #111236;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Chatbot Container */
+.chat-container {
+    width: 60%;
+    max-width: 700px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+    opacity: 0;
+    transition: opacity 0.5s ease-in;
+}
+
+.chat-container.hidden {
+    opacity: 0;
+}
+
+h1 {
+    color: #0770e3;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chat-window {
+    width: 100%;
+    background-color: #f5f7fa;
+    padding: 15px;
+    border-radius: 10px;
+    height: 300px;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-sizing: border-box;
+}
+
+.chat-window p {
+    margin: 0;
+    font-size: 1rem;
+    color: #111236;
+}
+
+.chatbox-container {
+    width: 80%;
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.chatbox {
+    width: 80%;
+    padding: 12px;
+    border-radius: 25px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    height: 50px;
+    outline: none;
+}
+
+.send-button {
+    width: 20%;
+    padding: 12px 20px;
+    background-color: #0770e3;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.footnote {
+    font-size: 0.8rem;
+    color: #8f90a0;
+    margin-top: 30px;
+    text-align: center;
+    padding-top: 10px;
+    border-top: 1px solid #ddd;
+    width: 100%;
+}
+
+
+/* Mobile Responsiveness */
+@media screen and (max-width: 768px) {
+    body {
+        padding: 0 10px;
+    }
+
+    .chat-container {
+        width: 95%;
+        max-width: 100%;
+        padding: 15px;
+        border-radius: 10px;
+        margin: 0;
+    }
+
+    .chatbox-container {
+        width: 100%;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .chatbox {
+        width: 100%;
+        height: 100px; /* Slightly larger textarea on mobile */
+        resize: vertical; /* Allow vertical resizing */
+    }
+
+    .send-button {
+        width: 100%;
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+
+    .chat-window {
+        height: 50vh; /* Responsive height */
+        max-height: 500px;
+    }
+
+    #logoContainer {
+        padding-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    #logoTop {
+        width: 100px;
+    }
+
+    .footnote {
+        font-size: 0.7rem;
+        padding: 10px;
+    }
+}
+
+
+* {
+    -webkit-tap-highlight-color: transparent;
+    box-sizing: border-box;
+}
+
+input, textarea, button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* Soft focus states for mobile */
+.chatbox:focus, .send-button:focus {
+    outline: 2px solid rgba(7, 112, 227, 0.5);
+    outline-offset: 2px;
+}
+
+/* Prevent text selection awkwardness */
+body {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.chat-window {
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Enhance touch targets */
+@media (pointer: coarse) {
+    .send-button, .chatbox {
+        min-height: 44px; /* Recommended touch target size */
+        padding: 10px 15px;
+    }
+}
+
+.typewriter {
+    font-family: inherit;
+    color: inherit;
+}
+
+/* Disclaimer Screen Styles */
+.disclaimer-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f5f7fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9998;
+    opacity: 1;
+    transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+}
+
+.disclaimer-container.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.disclaimer-content {
+    width: 80%;
+    max-width: 600px;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.disclaimer-content h1 {
+    color: #0770e3;
+    margin-bottom: 20px;
+}
+
+.disclaimer-text {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.disclaimer-text ul {
+    padding-left: 20px;
+    margin-bottom: 20px;
+}
+
+/* Mobile Responsiveness for Disclaimer */
+@media screen and (max-width: 768px) {
+    .disclaimer-content {
+        width: 95%;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .disclaimer-text {
+        font-size: 0.9rem;
+    }
+
+    .disclaimer-text ul {
+        padding-left: 15px;
+    }
+}
